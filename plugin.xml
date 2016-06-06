@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
+    id="cordova-plugin-audioroute"
+    version="0.1.0">
+
+    <name>Audio routing utilities</name>
+    <description>Change audio route and detect changes</description>
+    <license>MIT</license>
+
+    <engines>
+        <engine name="cordova" version=">=6.0.0"/>
+    </engines>
+
+    <js-module src="www/audioroute.js" name="AudioRoute">
+        <clobbers target="cordova.plugins.audioroute" />
+    </js-module>
+
+    <platform name="ios">
+        <config-file target="config.xml" parent="/*">
+            <feature name="AudioRoute">
+                <param name="ios-package" value="AudioRoute"/>
+            </feature>
+        </config-file>
+        <header-file src="src/ios/AudioRoute.h"/>
+        <source-file src="src/ios/AudioRoute.m"/>
+    </platform>
+
+</plugin>

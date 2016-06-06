@@ -1,0 +1,26 @@
+{
+  "name": "cordova-plugin-audioroute",
+  "version": "0.1.0",
+  "description": "Audio routing utilities for Cordova",
+  "cordova": {
+    "id": "cordova-plugin-audioroute",
+    "platforms": [
+      "ios"
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/saghul/cordova-plugin-audioroute.git"
+  },
+  "keywords": [
+    "cordova",
+    "cordova-ios",
+    "audio"
+  ],
+  "author": "Saúl Ibarra Corretgé <saghul@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/saghul/cordova-plugin-audioroute/issues"
+  },
+  "homepage": "https://github.com/saghul/cordova-plugin-audioroute"
+}
