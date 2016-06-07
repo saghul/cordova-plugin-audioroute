@@ -12,7 +12,7 @@ NSString *const kAirPlay         = @"airplay";
 NSString *const kBluetoothLE     = @"bluetooth-le";
 NSString *const kUnknown         = @"unknown";
 
-NSString *const kNewDeviceAvailable         = @"new-devie-available";
+NSString *const kNewDeviceAvailable         = @"new-device-available";
 NSString *const kOldDeviceUnavailable       = @"old-device-unavailable";
 NSString *const kCategoryChange             = @"category-change";
 NSString *const kOverride                   = @"override";

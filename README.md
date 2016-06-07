@@ -41,7 +41,7 @@ When the audio route has changed a 'audioroute-changed' event will be fired in `
 It contains the reason as associated data, which can be one of:
 
 * unknown
-* new-devie-available
+* new-device-available
 * old-device-unavailable
 * category-change
 * override
