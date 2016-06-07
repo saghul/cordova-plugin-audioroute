@@ -13,6 +13,37 @@ NSString *const kBluetoothLE     = @"bluetooth-le";
 NSString *const kUnknown         = @"unknown";
 
 
+- (void)pluginInitialize {
+    NSLog(@"Initializing AudioRoute plugin");
+    callbackId = nil;
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                          selector:@selector(routeChange:)
+                                          name:AVAudioSessionRouteChangeNotification
+                                          object:nil];
+    NSLog(@"AudioRoute plugin initialized");
+}
+
+
+- (void)routeChange:(NSNotification*)notification {
+    NSLog(@"Audio device route changed!");
+    if (callbackId != nil) {
+        CDVPluginResult* pluginResult;
+        pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+        [pluginResult setKeepCallbackAsBool:YES];
+        [self.commandDelegate sendPluginResult:pluginResult callbackId:callbackId];
+    }
+}
+
+
+- (void) setRouteChangeCallback:(CDVInvokedUrlCommand*)command {
+    CDVPluginResult* pluginResult;
+    callbackId = command.callbackId;
+    pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_NO_RESULT];
+    [pluginResult setKeepCallbackAsBool:YES];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+}
+
+
 - (void) currentOutputs:(CDVInvokedUrlCommand*)command {
     CDVPluginResult* pluginResult;
     NSMutableArray* outputs = [NSMutableArray array];
