@@ -6,6 +6,13 @@ This plugin allows applications to get notified audio about route changes (for e
 and also to query and override the audio device in use.
 
 
+## Installation
+
+The plugin can be installed using the Cordova CLI tool:
+
+    cordova plugin add cordova-plugin-audioroute --save
+
+
 ## API
 
 All these functions are available in the `cordova.plugins.audioroute` namespace.
@@ -49,9 +56,11 @@ Example:
                                   console.log('Audio route changed: ' + reason);
                               });
 
+
 ## License
 
 MIT
+
 
 ## Author
 
