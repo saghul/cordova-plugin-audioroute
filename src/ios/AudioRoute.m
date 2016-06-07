@@ -12,6 +12,14 @@ NSString *const kAirPlay         = @"airplay";
 NSString *const kBluetoothLE     = @"bluetooth-le";
 NSString *const kUnknown         = @"unknown";
 
+NSString *const kNewDeviceAvailable         = @"new-devie-available";
+NSString *const kOldDeviceUnavailable       = @"old-device-unavailable";
+NSString *const kCategoryChange             = @"category-change";
+NSString *const kOverride                   = @"override";
+NSString *const kWakeFromSleep              = @"wake-from-sleep";
+NSString *const kNoSuitableRouteForCategory = @"no-suitable-route-for-category";
+NSString *const kRouteConfigurationChange   = @"route-config-change";
+
 
 - (void)pluginInitialize {
     NSLog(@"Initializing AudioRoute plugin");
@@ -28,7 +36,38 @@ NSString *const kUnknown         = @"unknown";
     NSLog(@"Audio device route changed!");
     if (callbackId != nil) {
         CDVPluginResult* pluginResult;
-        pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+        NSString* reason;
+        NSDictionary* dict = notification.userInfo;
+        NSInteger routeChangeReason = [[dict valueForKey:AVAudioSessionRouteChangeReasonKey] integerValue];
+
+        switch (routeChangeReason) {
+        case AVAudioSessionRouteChangeReasonNewDeviceAvailable:
+            reason = kNewDeviceAvailable;
+            break;
+        case AVAudioSessionRouteChangeReasonOldDeviceUnavailable:
+            reason = kOldDeviceUnavailable;
+            break;
+        case AVAudioSessionRouteChangeReasonCategoryChange:
+            reason = kCategoryChange;
+            break;
+        case AVAudioSessionRouteChangeReasonOverride:
+            reason = kOverride;
+            break;
+        case AVAudioSessionRouteChangeReasonWakeFromSleep:
+            reason = kWakeFromSleep;
+            break;
+        case AVAudioSessionRouteChangeReasonNoSuitableRouteForCategory:
+            reason = kNoSuitableRouteForCategory;
+            break;
+        case AVAudioSessionRouteChangeReasonRouteConfigurationChange:
+            reason = kRouteConfigurationChange;
+            break;
+        default:
+            reason = kUnknown;
+            break;
+        }
+
+        pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:reason];
         [pluginResult setKeepCallbackAsBool:YES];
         [self.commandDelegate sendPluginResult:pluginResult callbackId:callbackId];
     }

@@ -14,13 +14,8 @@ AudioRoute.prototype.overrideOutput = function(output, successCallback, errorCal
     cordova.exec(successCallback, errorCallback, 'AudioRoute', 'overrideOutput', [output]);
 };
 
-var first = false;
-function routeChangeCallback() {
-    if (!first) {
-        first = true;
-        return;
-    }
-    cordova.fireDocumentEvent('audioroute-changed');
+function routeChangeCallback(reason) {
+    cordova.fireDocumentEvent('audioroute-changed', reason);
 }
 
 
