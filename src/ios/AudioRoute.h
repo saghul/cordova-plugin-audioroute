@@ -4,5 +4,6 @@
 @interface AudioRoute :CDVPlugin
 
 - (void) currentOutputs:(CDVInvokedUrlCommand*)command;
+- (void) overrideOutput:(CDVInvokedUrlCommand*)command;
 
 @end

@@ -12,8 +12,9 @@ NSString *const kAirPlay         = @"airplay";
 NSString *const kBluetoothLE     = @"bluetooth-le";
 NSString *const kUnknown         = @"unknown";
 
+
 - (void) currentOutputs:(CDVInvokedUrlCommand*)command {
-    CDVPluginResult * pluginResult;
+    CDVPluginResult* pluginResult;
     NSMutableArray* outputs = [NSMutableArray array];
 
     AVAudioSessionRouteDescription* route = [[AVAudioSession sharedInstance] currentRoute];
@@ -41,6 +42,32 @@ NSString *const kUnknown         = @"unknown";
     }
 
     pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsArray:[outputs copy]];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+}
+
+
+- (void) overrideOutput:(CDVInvokedUrlCommand*)command {
+    CDVPluginResult* pluginResult;
+    NSString* output = [command.arguments objectAtIndex:0];
+    BOOL success;
+    NSError* error;
+
+    AVAudioSession* session = [AVAudioSession sharedInstance];
+    if (output != nil) {
+        if ([output isEqualToString:@"speaker"]) {
+            success = [session overrideOutputAudioPort:AVAudioSessionPortOverrideSpeaker error:&error];
+        } else {
+            success = [session overrideOutputAudioPort:AVAudioSessionPortOverrideNone error:&error];
+        }
+        if (success) {
+            pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+        } else {
+            pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:error.localizedDescription];
+        }
+    } else {
+        pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"'output' was null"];
+    }
+
     [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
 
