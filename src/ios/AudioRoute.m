@@ -123,6 +123,11 @@ NSString *const kRouteConfigurationChange   = @"route-config-change";
     NSError* error;
 
     AVAudioSession* session = [AVAudioSession sharedInstance];
+
+    // make sure the AVAudioSession is properly configured
+    [session setActive: YES error: nil];
+    [session setCategory:AVAudioSessionCategoryPlayAndRecord error:nil];
+
     if (output != nil) {
         if ([output isEqualToString:@"speaker"]) {
             success = [session overrideOutputAudioPort:AVAudioSessionPortOverrideSpeaker error:&error];
