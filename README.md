@@ -52,8 +52,8 @@ It contains the reason as associated data, which can be one of:
 Example:
 
     document.addEventListener('audioroute-changed',
-                              function(reason) {
-                                  console.log('Audio route changed: ' + reason);
+                              function(event) {
+                                  console.log('Audio route changed: ' + event.reason);
                               });
 
 
