@@ -17,7 +17,7 @@ The plugin can be installed using the Cordova CLI tool:
 
 All these functions are available in the `cordova.plugins.audioroute` namespace.
 
-### currentOutputs(succesCallback, errorCallback)
+### currentOutputs(successCallback, errorCallback)
 
 Get an Array of the currently connected audio ports. The possible elements are:
 
@@ -33,7 +33,7 @@ Get an Array of the currently connected audio ports. The possible elements are:
 
 ## overrideOutput(output, successCallback, errorCallback)
 
-Overrides the audio ouput device. `options` must be one of `default` or `speaker`.
+Overrides the audio output device. `output` must be one of `default` or `speaker`.
 
 ## "audioroute-changed" event
 
