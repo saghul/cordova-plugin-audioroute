@@ -126,7 +126,7 @@ NSString *const kRouteConfigurationChange   = @"route-config-change";
 
     // make sure the AVAudioSession is properly configured
     [session setActive: YES error: nil];
-    [session setCategory:AVAudioSessionCategoryPlayAndRecord error:nil];
+    [session setCategory:AVAudioSessionCategoryPlayAndRecord withOptions:AVAudioSessionCategoryOptionDuckOthers error:nil];
 
     if (output != nil) {
         if ([output isEqualToString:@"speaker"]) {
