@@ -117,6 +117,9 @@ NSString *const kRouteConfigurationChange   = @"route-config-change";
 
 
 - (void) overrideOutput:(CDVInvokedUrlCommand*)command {
+    // make it async, cause in latest IOS it started to take ~1 sec and produce UI thread blocking issues 
+    [self.commandDelegate runInBackground:^{
+         
     CDVPluginResult* pluginResult;
     NSString* output = [command.arguments objectAtIndex:0];
     BOOL success;
@@ -144,6 +147,8 @@ NSString *const kRouteConfigurationChange   = @"route-config-change";
     }
 
     [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+        
+    }];
 }
 
 @end
