@@ -10,6 +10,7 @@ NSString *const kBuiltinSpeaker  = @"builtin-speaker";
 NSString *const kHdmi            = @"hdmi";
 NSString *const kAirPlay         = @"airplay";
 NSString *const kBluetoothLE     = @"bluetooth-le";
+NSString *const kBluetoothHFP    = @"bluetooth-hfp";
 NSString *const kUnknown         = @"unknown";
 
 NSString *const kNewDeviceAvailable         = @"new-device-available";
@@ -33,7 +34,6 @@ NSString *const kRouteConfigurationChange   = @"route-config-change";
 
 
 - (void)routeChange:(NSNotification*)notification {
-    NSLog(@"Audio device route changed!");
     if (callbackId != nil) {
         CDVPluginResult* pluginResult;
         NSString* reason;
@@ -67,6 +67,8 @@ NSString *const kRouteConfigurationChange   = @"route-config-change";
             break;
         }
 
+        NSLog(@"[AudioRoute]routeChange, %@, %ld", reason, (long)routeChangeReason);
+
         pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:reason];
         [pluginResult setKeepCallbackAsBool:YES];
         [self.commandDelegate sendPluginResult:pluginResult callbackId:callbackId];
@@ -90,6 +92,7 @@ NSString *const kRouteConfigurationChange   = @"route-config-change";
     AVAudioSessionRouteDescription* route = [[AVAudioSession sharedInstance] currentRoute];
     for (AVAudioSessionPortDescription* desc in [route outputs]) {
         NSString* portType = [desc portType];
+        NSLog(@"[AudioRoute]currentOutputs, portType %@, %@", portType, desc);
         if ([portType isEqualToString:AVAudioSessionPortLineOut]) {
             [outputs addObject:kLineOut];
         } else if ([portType isEqualToString:AVAudioSessionPortHeadphones]) {
@@ -106,10 +109,14 @@ NSString *const kRouteConfigurationChange   = @"route-config-change";
             [outputs addObject:kAirPlay];
         } else if ([portType isEqualToString:AVAudioSessionPortBluetoothLE]) {
             [outputs addObject:kBluetoothLE];
+        } else if ([portType isEqualToString:AVAudioSessionPortBluetoothHFP]) {
+            [outputs addObject:kBluetoothHFP];
         } else {
             [outputs addObject:kUnknown];
         }
     }
+
+    NSLog(@"[AudioRoute]currentOutputs, %@", outputs);
 
     pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsArray:[outputs copy]];
     [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
@@ -117,6 +124,9 @@ NSString *const kRouteConfigurationChange   = @"route-config-change";
 
 
 - (void) overrideOutput:(CDVInvokedUrlCommand*)command {
+    // make it async, cause in latest IOS it started to take ~1 sec and produce UI thread blocking issues
+    [self.commandDelegate runInBackground:^{
+
     CDVPluginResult* pluginResult;
     NSString* output = [command.arguments objectAtIndex:0];
     BOOL success;
@@ -144,6 +154,8 @@ NSString *const kRouteConfigurationChange   = @"route-config-change";
     }
 
     [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+
+    }];
 }
 
 @end
